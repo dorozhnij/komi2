@@ -1,0 +1,205 @@
+:root {
+  --blue: #012D6E;
+  --blue-2: #0B4A9F;
+  --blue-soft: #E8EFF9;
+  --gold: #FDCF00;
+  --ink: #10203D;
+  --muted: #5C6B85;
+  --bg: #EDF1F8;
+  --red: #C23A2B;
+  --cyan: #1C62C9;
+  --radius: 20px;
+  --shadow: 0 10px 30px rgba(1, 45, 110, .10);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 14px calc(20px + env(safe-area-inset-bottom));
+}
+
+.screen.hidden { display: none; }
+.screen:not(.hidden) { animation: fade .25s ease; }
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- шапка игры ---------- */
+.gamehead { margin: 2px 2px 12px; }
+.gamehead-top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px;
+}
+.brand-mini { color: var(--blue); font-weight: 800; font-size: 15px; }
+.brand-mini .gold { color: #D9A400; }
+.progress { height: 8px; background: #D8E2F0; border-radius: 99px; overflow: hidden; }
+.progress-fill {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--blue), var(--blue-2));
+  border-radius: 99px; transition: width .35s ease;
+}
+
+/* ---------- карточки и кнопки ---------- */
+.card {
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px;
+}
+.card-title { margin: 2px 0 10px; font-size: 18px; }
+
+.btn {
+  display: block; width: 100%; padding: 16px;
+  border: 0; border-radius: 16px;
+  background: var(--blue); color: #fff;
+  font-family: inherit; font-size: 18px; font-weight: 700;
+  text-align: center; text-decoration: none; cursor: pointer;
+  transition: transform .06s ease, opacity .2s ease;
+}
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.ghost { background: var(--blue-soft); color: var(--blue); margin-bottom: 10px; }
+
+/* ---------- стартовый экран ---------- */
+.hero {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-2) 100%);
+  color: #fff; border-radius: 24px;
+  padding: 30px 20px 26px; text-align: center; margin-bottom: 12px;
+}
+.logo { font-size: 42px; font-weight: 800; letter-spacing: .3px; }
+.logo span { color: var(--gold); }
+.tagline { margin: 10px 0 0; opacity: .93; font-size: 15px; line-height: 1.4; }
+
+.rules { margin: 0 0 14px; padding-left: 20px; }
+.rules li { margin-bottom: 9px; font-size: 15px; line-height: 1.45; }
+
+.legend { margin-bottom: 16px; font-size: 14px; }
+.legend summary { cursor: pointer; font-weight: 600; color: var(--blue); padding: 6px 0; }
+.legend-row { display: flex; justify-content: space-between; padding: 6px 2px; border-top: 1px solid #EEF2F8; }
+
+.footnote { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.5; padding: 2px 10px 0; }
+
+/* ---------- галерея ---------- */
+.gallery { position: relative; border-radius: 16px; overflow: hidden; background: #0B1E3D; }
+.g-track {
+  display: flex; overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  aspect-ratio: 4 / 3;
+  scrollbar-width: none;
+}
+.g-track::-webkit-scrollbar { display: none; }
+.g-slide { position: relative; flex: 0 0 100%; height: 100%; overflow: hidden; scroll-snap-align: start; }
+.g-bg {
+  position: absolute; inset: -24px;
+  background-size: cover; background-position: center;
+  filter: blur(16px) brightness(.6); transform: scale(1.2);
+}
+.g-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.g-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 50%; border: 0;
+  background: rgba(255, 255, 255, .92); color: var(--blue);
+  font-size: 26px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .25); padding: 0 0 3px;
+}
+.g-nav.prev { left: 10px; }
+.g-nav.next { right: 10px; }
+.g-nav.hidden, .g-count.hidden { display: none; }
+.g-dots {
+  position: absolute; bottom: 10px; left: 0; right: 0;
+  display: flex; gap: 6px; justify-content: center;
+}
+.g-dots i { width: 6px; height: 6px; border-radius: 99px; background: rgba(255, 255, 255, .5); transition: all .2s; }
+.g-dots i.on { width: 18px; background: #fff; }
+.g-count {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(11, 30, 61, .65); color: #fff;
+  font-size: 12px; font-weight: 600;
+  padding: 4px 10px; border-radius: 99px;
+}
+
+/* ---------- метаданные лота ---------- */
+.lot-meta { margin-top: 12px; }
+.lot-title { font-size: 17px; font-weight: 700; }
+.lot-street { font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+/* ---------- бегунок цены ---------- */
+.guess { margin: 14px 0 16px; }
+.guess-label {
+  font-size: 12px; color: var(--muted); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.guess-value {
+  font-size: 34px; font-weight: 800; color: var(--blue);
+  margin: 2px 0 6px; font-variant-numeric: tabular-nums;
+}
+.guess input[type=range] {
+  width: 100%; margin: 0; accent-color: var(--blue);
+  height: 40px; cursor: pointer;
+}
+.scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ---------- результат лота ---------- */
+.res-photo-wrap { position: relative; border-radius: 14px; overflow: hidden; background: #0B1E3D; }
+.res-photo-wrap img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: contain; }
+.res-badge {
+  position: absolute; left: 10px; top: 10px;
+  background: var(--gold); color: #10203D;
+  font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 99px;
+}
+.res-price { margin-top: 14px; }
+.res-price-k {
+  font-size: 13px; color: var(--muted); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.res-price-v { font-size: 32px; font-weight: 800; color: var(--blue); margin-top: 2px; }
+
+.rows { margin: 12px 0 16px; border-top: 1px solid #E7EDF6; }
+.row { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #E7EDF6; font-size: 15px; }
+.row .k { color: var(--muted); }
+.row .v { font-weight: 700; text-align: right; }
+.row .v.over { color: var(--red); }
+.row .v.under { color: var(--cyan); }
+
+/* ---------- финал ---------- */
+.final-kicker {
+  font-size: 13px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .08em; text-align: center;
+}
+.final-score { text-align: center; margin: 6px 0 14px; }
+.final-score #fin-total { font-size: 56px; font-weight: 800; color: var(--blue); }
+.final-score .of { font-size: 18px; color: var(--muted); font-weight: 600; }
+
+.verdict {
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  color: #fff; border-radius: 16px; padding: 16px;
+}
+.verdict .vt { font-size: 22px; font-weight: 800; }
+.verdict .vd { margin-top: 6px; font-size: 14px; opacity: .92; line-height: 1.5; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.stat { background: #F4F7FC; border-radius: 14px; padding: 10px 12px; }
+.stat.wide { grid-column: 1 / -1; }
+.stat .sv { font-weight: 800; font-size: 18px; color: var(--blue); font-variant-numeric: tabular-nums; }
+.stat .sk { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+
+.roundlist { margin: 4px 0 16px; }
+.rl { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid #EDF1F8; }
+.rl-main { display: flex; flex-direction: column; gap: 2px; font-size: 13px; min-width: 0; }
+.rl-main span { color: var(--muted); font-size: 12px; }
+.rl-side { font-weight: 800; color: var(--blue); font-size: 16px; white-space: nowrap; }
+
+@media (min-width: 520px) {
+  .app { padding-top: 32px; }
+}

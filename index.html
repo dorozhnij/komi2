@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Медиакоми — угадай цену квартиры в Коми</title>
+<meta name="description" content="Игра-угадайка: оцени по фотографиям, сколько стоит квартира из Республики Коми, и сравни свою цену с реальным объявлением на Авито.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23012D6E'/%3E%3Ctext x='32' y='42' font-size='24' font-family='Arial' font-weight='bold' fill='%23FDCF00' text-anchor='middle'%3EМК%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+
+  <!-- СТАРТОВЫЙ ЭКРАН -->
+  <section id="screen-start" class="screen">
+    <header class="hero">
+      <div class="logo">Медиа<span>коми</span></div>
+      <p class="tagline">Угадай цену квартиры в&nbsp;Республике Коми</p>
+    </header>
+
+    <div class="card">
+      <h2 class="card-title">Как играть</h2>
+      <ol class="rules">
+        <li>Тебя ждут <b>10 квартир</b> — реальные объявления с&nbsp;Авито. Смотри фотографии и&nbsp;решай, сколько они стоят.</li>
+        <li>Двигай бегунок и&nbsp;жми <b>«Оценить»</b>: узнаешь настоящую цену, свои баллы и&nbsp;ссылку на&nbsp;объявление.</li>
+        <li>В&nbsp;финале — вердикт: <b>жадный студент</b>, <b>адекватный квартирант</b> или <b>транжира</b>.</li>
+      </ol>
+      <details class="legend">
+        <summary>Как начисляются баллы</summary>
+        <div class="legend-row"><span>Ошибка до 5%</span><b>100 баллов</b></div>
+        <div class="legend-row"><span>Ошибка до 10%</span><b>85 баллов</b></div>
+        <div class="legend-row"><span>Ошибка до 20%</span><b>65 баллов</b></div>
+        <div class="legend-row"><span>Ошибка до 35%</span><b>40 баллов</b></div>
+        <div class="legend-row"><span>Ошибка до 60%</span><b>20 баллов</b></div>
+        <div class="legend-row"><span>Ошибка больше</span><b>10 баллов</b></div>
+      </details>
+      <button id="btn-start" class="btn">Запустить игру</button>
+    </div>
+
+    <p class="footnote">Все квартиры и цены — настоящие объявления Авито из города Инта. Максимум — 1000 баллов за игру.</p>
+  </section>
+
+  <!-- ЭКРАН ЛОТА -->
+  <section id="screen-round" class="screen hidden">
+    <div class="gamehead">
+      <div class="gamehead-top">
+        <span class="brand-mini">Медиа<span class="gold">коми</span></span>
+        <span class="round-label"></span>
+      </div>
+      <div class="progress"><div class="progress-fill"></div></div>
+    </div>
+    <div class="card">
+      <div class="gallery">
+        <div class="g-track" id="g-track"></div>
+        <button class="g-nav prev" id="g-prev" aria-label="Предыдущее фото">‹</button>
+        <button class="g-nav next" id="g-next" aria-label="Следующее фото">›</button>
+        <div class="g-dots" id="g-dots"></div>
+        <div class="g-count" id="g-count"></div>
+      </div>
+      <div class="lot-meta">
+        <div class="lot-title" id="lot-title"></div>
+        <div class="lot-street" id="lot-street"></div>
+      </div>
+      <div class="guess">
+        <div class="guess-label">Твоя цена</div>
+        <div class="guess-value" id="guess-value"></div>
+        <input type="range" id="guess-slider" min="50000" max="2000000" step="5000" value="500000" aria-label="Выбор цены">
+        <div class="scale"><span>50 тыс. ₽</span><span>2 млн ₽</span></div>
+      </div>
+      <button id="btn-rate" class="btn">Оценить</button>
+    </div>
+  </section>
+
+  <!-- РЕЗУЛЬТАТ ЛОТА -->
+  <section id="screen-result" class="screen hidden">
+    <div class="gamehead">
+      <div class="gamehead-top">
+        <span class="brand-mini">Медиа<span class="gold">коми</span></span>
+        <span class="round-label"></span>
+      </div>
+      <div class="progress"><div class="progress-fill"></div></div>
+    </div>
+    <div class="card">
+      <div class="res-photo-wrap">
+        <img id="res-photo" alt="Фото квартиры">
+        <span class="res-badge" id="res-band"></span>
+      </div>
+      <div class="lot-meta">
+        <div class="lot-title" id="res-title"></div>
+        <div class="lot-street" id="res-street"></div>
+      </div>
+      <div class="res-price">
+        <div class="res-price-k">Реальная цена</div>
+        <div class="res-price-v" id="res-real"></div>
+      </div>
+      <div class="rows">
+        <div class="row"><span class="k">Твоя цена</span><span class="v" id="res-guess"></span></div>
+        <div class="row"><span class="k">Разница</span><span class="v" id="res-diff"></span></div>
+        <div class="row"><span class="k">Баллы за лот</span><span class="v" id="res-pts"></span></div>
+      </div>
+      <a id="res-link" class="btn ghost" target="_blank" rel="noopener">Открыть объявление на Авито ↗</a>
+      <button id="btn-next" class="btn">Следующая квартира</button>
+    </div>
+  </section>
+
+  <!-- ФИНАЛ -->
+  <section id="screen-final" class="screen hidden">
+    <div class="card">
+      <div class="final-kicker">Игра окончена</div>
+      <div class="final-score"><span id="fin-total">0</span><span class="of"> / 1000</span></div>
+      <div class="verdict" id="fin-verdict"></div>
+      <div class="stats">
+        <div class="stat"><div class="sv" id="st-err"></div><div class="sk">средняя ошибка</div></div>
+        <div class="stat"><div class="sv" id="st-hits"></div><div class="sk">точных попаданий (±5%)</div></div>
+        <div class="stat wide"><div class="sv" id="st-net"></div><div class="sk" id="st-net-k"></div></div>
+      </div>
+      <h3 class="card-title">Твои раунды</h3>
+      <div class="roundlist" id="fin-list"></div>
+      <button id="btn-again" class="btn">Играть ещё раз</button>
+    </div>
+    <p class="footnote">Медиакоми · цены из объявлений Авито, г. Инта, Республика Коми</p>
+  </section>
+
+</main>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
